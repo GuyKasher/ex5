@@ -71,6 +71,17 @@ public class MainActivityTest extends TestCase {
 
   @Test
   public void when_userPutInputAndClicksButton_then_inputShouldBeErasedFromEditText() {
+    String userInput = "Call my grandma today at 18:00";
+
+    activityController.create().visible(); // let the activity think it is being shown
+    MainActivity activityUnderTest = activityController.get();
+    EditText editText = activityUnderTest.findViewById(R.id.editTextInsertTask);
+    View fab = activityUnderTest.findViewById(R.id.buttonCreateTodoItem);
+
+    editText.setText(userInput);
+    fab.performClick();
+    assertEquals("", editText.getText().toString());
+
     //    TODO: implement the test.
     //     to set up the test, take a look at `when_userPutInputAndClicksButton_then_activityShouldCallAddItem()`
     //     to verify, use methods such as "assertEquals(...)" or "assertTrue(...)"

@@ -1,8 +1,23 @@
 package exercise.android.reemh.todo_items;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.Adapter;
+import android.widget.EditText;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -13,14 +28,74 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    if (dataBase == null) {
+    if (savedInstanceState == null||!savedInstanceState.containsKey("dataBase")) {
       dataBase = new TodoItemsDataBaseImpl();
     }
+    else{
+      dataBase= (TodoItemsDataBase) savedInstanceState.getSerializable("dataBase");
+    }
+
+
+//    ArrayList<TodoItem> to_do_items=new ArrayList<>();
+    RecyclerView recyclerTodoItemsList = findViewById(R.id.recyclerTodoItemsList);
+    EditText editTextInsertTask = findViewById(R.id.editTextInsertTask);
+    FloatingActionButton buttonCreateTodoItem = findViewById(R.id.buttonCreateTodoItem);
+
+
+    ToDoItemAdapter adapter= new ToDoItemAdapter(dataBase);
+//    adapter.setToDo((ArrayList<TodoItem>) dataBase.getCurrentItems());
+    recyclerTodoItemsList.setAdapter(adapter);
+    recyclerTodoItemsList.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL,false));
+
+
+    editTextInsertTask.addTextChangedListener(new TextWatcher() {
+      public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+      public void onTextChanged(CharSequence s, int start, int before, int count) { }
+      public void afterTextChanged(Editable s) {
+      String newText = editTextInsertTask.getText().toString();
+      }
+        // text did change
+    });
+
+
+
+       buttonCreateTodoItem.setOnClickListener(v -> {
+//      Intent intentToOpenService = new Intent(MainActivity.this, CalculateRootsService.class);
+      String userInputString = editTextInsertTask.getText().toString();
+      if (!userInputString.equals("")) {
+        dataBase.addNewInProgressItem(userInputString);
+        adapter.notifyDataSetChanged();
+        editTextInsertTask.setText("");
+      }
+    });
+
+
+
 
     // TODO: implement the specs as defined below
     //    (find all UI components, hook them up, connect everything you need)
+
+
   }
+
+  @Override
+  protected void onSaveInstanceState(@NonNull Bundle outState) {
+    super.onSaveInstanceState(outState);
+
+//    RecyclerView recyclerTodoItemsList = findViewById(R.id.recyclerTodoItemsList);
+    EditText editTextInsertTask = findViewById(R.id.editTextInsertTask);
+//    FloatingActionButton buttonCreateTodoItem = findViewById(R.id.buttonCreateTodoItem);
+    outState.putSerializable("dataBase", (Serializable) this.dataBase);
+    outState.putString("editText",editTextInsertTask.getText().toString());
+//    outState.putBoolean("button",buttonCreateTodoItem.isEnabled());
+//    outState.putParcelable("recycler", Objects.requireNonNull(recyclerTodoItemsList.getLayoutManager()).onSaveInstanceState() );
+
+
+
+  }
+
 }
+
 
 /*
 

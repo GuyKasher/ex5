@@ -1,10 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="40dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:minHeight="70dp">
 
-<!-- TODO: edit this file as you want-->
+
+
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:layout_marginBottom="16dp"
+        android:text="@string/blabla"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/deleteButton"
+        android:layout_width="85dp"
+        android:layout_height="54dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="8dp"
+        android:text="D"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/inProgress"
+        android:layout_width="85dp"
+        android:layout_height="54dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="112dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/blue_100"
+        android:text="pro"
+        android:textColor="@color/black"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
