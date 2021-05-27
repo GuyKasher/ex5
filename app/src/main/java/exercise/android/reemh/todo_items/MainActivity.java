@@ -21,78 +21,77 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
-  public TodoItemsDataBase dataBase = null;
+    public TodoItemsDataBase dataBase = null;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-    if (savedInstanceState == null||!savedInstanceState.containsKey("dataBase")) {
-      dataBase = new TodoItemsDataBaseImpl();
-    }
-    else{
-      dataBase= (TodoItemsDataBase) savedInstanceState.getSerializable("dataBase");
-    }
+        if (savedInstanceState == null || !savedInstanceState.containsKey("dataBase")) {
+            dataBase = ToDoItemApplication.getInstance().getDataBase();
+        } else {
+            dataBase = (TodoItemsDataBase) savedInstanceState.getSerializable("dataBase");
+        }
 
 
+//    dataBase.toDoItemLiveDataPublic.observe();
 //    ArrayList<TodoItem> to_do_items=new ArrayList<>();
-    RecyclerView recyclerTodoItemsList = findViewById(R.id.recyclerTodoItemsList);
-    EditText editTextInsertTask = findViewById(R.id.editTextInsertTask);
-    FloatingActionButton buttonCreateTodoItem = findViewById(R.id.buttonCreateTodoItem);
+        RecyclerView recyclerTodoItemsList = findViewById(R.id.recyclerTodoItemsList);
+        EditText editTextInsertTask = findViewById(R.id.editTextInsertTask);
+        FloatingActionButton buttonCreateTodoItem = findViewById(R.id.buttonCreateTodoItem);
 
 
-    ToDoItemAdapter adapter= new ToDoItemAdapter(dataBase);
+        ToDoItemAdapter adapter = new ToDoItemAdapter(dataBase);
 //    adapter.setToDo((ArrayList<TodoItem>) dataBase.getCurrentItems());
-    recyclerTodoItemsList.setAdapter(adapter);
-    recyclerTodoItemsList.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL,false));
+        recyclerTodoItemsList.setAdapter(adapter);
+        recyclerTodoItemsList.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
 
-    editTextInsertTask.addTextChangedListener(new TextWatcher() {
-      public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-      public void onTextChanged(CharSequence s, int start, int before, int count) { }
-      public void afterTextChanged(Editable s) {
-      String newText = editTextInsertTask.getText().toString();
-      }
-        // text did change
-    });
+        editTextInsertTask.addTextChangedListener(new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            public void afterTextChanged(Editable s) {
+                String newText = editTextInsertTask.getText().toString();
+            }
+            // text did change
+        });
 
 
-
-       buttonCreateTodoItem.setOnClickListener(v -> {
-//      Intent intentToOpenService = new Intent(MainActivity.this, CalculateRootsService.class);
-      String userInputString = editTextInsertTask.getText().toString();
-      if (!userInputString.equals("")) {
-        dataBase.addNewInProgressItem(userInputString);
-        adapter.notifyDataSetChanged();
-        editTextInsertTask.setText("");
-      }
-    });
+        buttonCreateTodoItem.setOnClickListener(v -> {
+            String userInputString = editTextInsertTask.getText().toString();
+            if (!userInputString.equals("")) {
+                dataBase.addNewInProgressItem(userInputString);
+                adapter.notifyDataSetChanged();
+                editTextInsertTask.setText("");
+            }
+        });
 
 
+        // TODO: implement the specs as defined below
+        //    (find all UI components, hook them up, connect everything you need)
 
 
-    // TODO: implement the specs as defined below
-    //    (find all UI components, hook them up, connect everything you need)
+    }
 
-
-  }
-
-  @Override
-  protected void onSaveInstanceState(@NonNull Bundle outState) {
-    super.onSaveInstanceState(outState);
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
 
 //    RecyclerView recyclerTodoItemsList = findViewById(R.id.recyclerTodoItemsList);
-    EditText editTextInsertTask = findViewById(R.id.editTextInsertTask);
+        EditText editTextInsertTask = findViewById(R.id.editTextInsertTask);
 //    FloatingActionButton buttonCreateTodoItem = findViewById(R.id.buttonCreateTodoItem);
-    outState.putSerializable("dataBase", (Serializable) this.dataBase);
-    outState.putString("editText",editTextInsertTask.getText().toString());
+        outState.putSerializable("dataBase", (Serializable) this.dataBase);
+        outState.putString("editText", editTextInsertTask.getText().toString());
 //    outState.putBoolean("button",buttonCreateTodoItem.isEnabled());
 //    outState.putParcelable("recycler", Objects.requireNonNull(recyclerTodoItemsList.getLayoutManager()).onSaveInstanceState() );
 
 
-
-  }
+    }
 
 }
 

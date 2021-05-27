@@ -16,7 +16,7 @@ public class ToDoItemAdapter extends RecyclerView.Adapter<ToDoItemHolder> {
 
 
 
-    private TodoItemsDataBase todoItemsDataBase=new TodoItemsDataBaseImpl();
+    private TodoItemsDataBase todoItemsDataBase=ToDoItemApplication.getInstance().getDataBase();
 
     public ToDoItemAdapter(@NonNull TodoItemsDataBase todoItemsDataBaseImpl){
         this.todoItemsDataBase=  todoItemsDataBaseImpl;
