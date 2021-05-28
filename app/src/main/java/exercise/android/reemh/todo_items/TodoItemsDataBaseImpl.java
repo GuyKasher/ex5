@@ -18,9 +18,11 @@ public class TodoItemsDataBaseImpl implements TodoItemsDataBase, Serializable {
 
     ArrayList<TodoItem> items = new ArrayList<>();
     private final Context context;
-//    private final MutableLiveData<List<TodoItem>> toDoItemLiveDataMutable = new MutableLiveData<>();
-//    public LiveData<List<TodoItem>> toDoItemLiveDataPublic = toDoItemLiveDataMutable;
-    private SharedPreferences sharedPreferences;
+
+    private final MutableLiveData<List<TodoItem>> toDoItemLiveDataMutable = new MutableLiveData<>();
+    public final LiveData<List<TodoItem>> toDoItemLiveDataPublic = toDoItemLiveDataMutable;
+
+    private final SharedPreferences sharedPreferences;
 
     public TodoItemsDataBaseImpl(Context context) {
         this.context = context;
@@ -39,12 +41,16 @@ public class TodoItemsDataBaseImpl implements TodoItemsDataBase, Serializable {
             }
         }
 
-//        toDoItemLiveDataMutable.setValue(new ArrayList(items));
+        toDoItemLiveDataMutable.setValue(new ArrayList<>(items));
+    }
+
+    public LiveData<List<TodoItem>> getToDoItemLiveDataPublic() {
+        return toDoItemLiveDataPublic;
     }
 
     @Override
     public List<TodoItem> getCurrentItems() {
-        return new ArrayList<>(items);
+        return this.items;
     }
 
     @Override
@@ -65,7 +71,7 @@ public class TodoItemsDataBaseImpl implements TodoItemsDataBase, Serializable {
         editor.putString(String.valueOf(newItem.getId()), newItem.itemToString());
         editor.apply();
 
-//        toDoItemLiveDataMutable.setValue(new ArrayList(items));
+        toDoItemLiveDataMutable.setValue(new ArrayList<>(items));
 
     }
 
@@ -90,33 +96,50 @@ public class TodoItemsDataBaseImpl implements TodoItemsDataBase, Serializable {
         editor.apply();
 
 
-//        toDoItemLiveDataMutable.setValue(new ArrayList(items));
+        toDoItemLiveDataMutable.setValue(new ArrayList<>(items));
 
 
     }
 
     @Override
     public void markItemDone(TodoItem item) {
+        int itemIndex = -1;
         for (int i = 0; i < this.items.size(); i++) {
             if (item.description.equals(this.items.get(i).description)) {
                 this.items.get(i).status = Status.DONE;
+                itemIndex=i;
+                break;
+                
             }
         }
         sortItems();
-//        toDoItemLiveDataMutable.setValue(new ArrayList(items));
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(String.valueOf(item.getId()), this.items.get(itemIndex).itemToString());
+        editor.apply();
+        
+        toDoItemLiveDataMutable.setValue(new ArrayList<>(items));
 
 
     }
 
     @Override
     public void markItemInProgress(TodoItem item) {
+        int itemIndex = -1;
         for (int i = 0; i < this.items.size(); i++) {
             if (item.description.equals(this.items.get(i).description)) {
                 this.items.get(i).status = Status.INPROGRASS;
+                itemIndex=i;
+                break;
+
             }
         }
         sortItems();
-//        toDoItemLiveDataMutable.setValue(new ArrayList(items));
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(String.valueOf(item.getId()), this.items.get(itemIndex).itemToString());
+        editor.apply();
+        toDoItemLiveDataMutable.setValue(new ArrayList<>(items));
 
 
     }
@@ -132,7 +155,7 @@ public class TodoItemsDataBaseImpl implements TodoItemsDataBase, Serializable {
         editor.remove(String.valueOf(item.getId()));
         editor.apply();
 
-//        toDoItemLiveDataMutable.setValue(new ArrayList(items));
+        toDoItemLiveDataMutable.setValue(new ArrayList<>(items));
 
 
         //      }

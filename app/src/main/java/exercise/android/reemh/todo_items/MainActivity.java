@@ -2,6 +2,7 @@ package exercise.android.reemh.todo_items;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,11 +18,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
-    public TodoItemsDataBase dataBase = null;
+    public TodoItemsDataBaseImpl dataBase = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +33,10 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null || !savedInstanceState.containsKey("dataBase")) {
             dataBase = ToDoItemApplication.getInstance().getDataBase();
         } else {
-            dataBase = (TodoItemsDataBase) savedInstanceState.getSerializable("dataBase");
+            dataBase = (TodoItemsDataBaseImpl) savedInstanceState.getSerializable("dataBase");
         }
 
 
-//    dataBase.toDoItemLiveDataPublic.observe();
 //    ArrayList<TodoItem> to_do_items=new ArrayList<>();
         RecyclerView recyclerTodoItemsList = findViewById(R.id.recyclerTodoItemsList);
         EditText editTextInsertTask = findViewById(R.id.editTextInsertTask);
@@ -47,6 +48,16 @@ public class MainActivity extends AppCompatActivity {
         recyclerTodoItemsList.setAdapter(adapter);
         recyclerTodoItemsList.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
+
+        dataBase.getToDoItemLiveDataPublic().observe(this, new Observer<List<TodoItem>>() {
+            @Override
+            public void onChanged(List<TodoItem> todoItems) {
+                if (todoItems.size()==0){
+//                    adapter.notifyDataSetChanged();
+
+                }
+            }
+        });
 
         editTextInsertTask.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
