@@ -12,13 +12,15 @@ public class ToDoItemHolder extends RecyclerView.ViewHolder {
     TextView description;
     Button deleteButton;
     Button progressButton;
+    Button editButton;
 
 
     public ToDoItemHolder(@NonNull View itemView) {
         super(itemView);
-        this.description = itemView.findViewById(R.id.description);
+        this.description = itemView.findViewById(R.id.description_text);
         this.deleteButton=itemView.findViewById(R.id.deleteButton);
         this.progressButton=itemView.findViewById(R.id.inProgress);
+        this.editButton=itemView.findViewById(R.id.description_button);
 
     }
 }

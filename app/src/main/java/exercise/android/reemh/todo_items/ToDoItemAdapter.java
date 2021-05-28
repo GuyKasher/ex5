@@ -1,6 +1,7 @@
 package exercise.android.reemh.todo_items;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,7 +93,21 @@ public class ToDoItemAdapter extends RecyclerView.Adapter<ToDoItemHolder> {
             this.notifyDataSetChanged();
         });
 
+        holder.editButton.setOnClickListener(v -> {
+//      Intent intentToOpenService = new Intent(MainActivity.this, CalculateRootsService.class);
+            Intent intentToOpenSuccess = new Intent(this, EditToDoItemActivity.class);
+            intentToOpenSuccess.putExtra("root1",num1);
+            intentToOpenSuccess.putExtra("root2",num2);
+            intentToOpenSuccess.putExtra("original_number",original_number);
+            intentToOpenSuccess.putExtra("time",time);
+            startActivity(intentToOpenSuccess);
+            todoItemsDataBase.deleteItem(_to_do);
+//      System.out.println(to_do_items.get(0).description);
+            this.todoItemsDataBase.sortItems();
 
+            this.notifyDataSetChanged();
+
+        });
 
 
     }
