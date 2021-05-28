@@ -52,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
         dataBase.getToDoItemLiveDataPublic().observe(this, new Observer<List<TodoItem>>() {
             @Override
             public void onChanged(List<TodoItem> todoItems) {
-                if (todoItems.size()==0){
-//                    adapter.notifyDataSetChanged();
+                {
+                    adapter.notifyDataSetChanged();
 
                 }
             }

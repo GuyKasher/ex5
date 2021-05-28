@@ -2,7 +2,9 @@ package exercise.android.reemh.todo_items;
 
 import android.app.Application;
 
-public class ToDoItemApplication extends Application {
+import java.io.Serializable;
+
+public class ToDoItemApplication extends Application  {
     private TodoItemsDataBaseImpl dataBase;
     public TodoItemsDataBaseImpl getDataBase(){
         return dataBase;

@@ -1,5 +1,6 @@
 package exercise.android.reemh.todo_items;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +14,8 @@ public class ToDoItemHolder extends RecyclerView.ViewHolder {
     Button deleteButton;
     Button progressButton;
     Button editButton;
+    private final Context context;
+
 
 
     public ToDoItemHolder(@NonNull View itemView) {
@@ -21,6 +24,11 @@ public class ToDoItemHolder extends RecyclerView.ViewHolder {
         this.deleteButton=itemView.findViewById(R.id.deleteButton);
         this.progressButton=itemView.findViewById(R.id.inProgress);
         this.editButton=itemView.findViewById(R.id.description_button);
+        context=itemView.getContext();
 
+    }
+
+    public Context getContext() {
+        return context;
     }
 }
