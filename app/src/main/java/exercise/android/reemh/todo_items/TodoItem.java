@@ -49,7 +49,7 @@ public class TodoItem implements Serializable {
 
         counter += 1;
     }
-//TODO!!!!!!!!!!!!!!!!!!!!!!!!
+
     public String itemToString() {
         DateFormat dateFormat = new SimpleDateFormat("E, MMM dd yyyy HH:mm:ss");
         String createTimeString=dateFormat.format(this.createTime);
