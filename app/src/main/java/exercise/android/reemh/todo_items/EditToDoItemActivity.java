@@ -41,6 +41,7 @@ public class EditToDoItemActivity extends AppCompatActivity {
 
         desText.setText(curTodoItem.getDescription());
         createdDate.setText("created time: "+curTodoItem.getDateString());
+        dataBase.setLastModified(curId);
         lastModifiedDate.setText("last modified: "+curTodoItem.getLastModifiedString());
 
 

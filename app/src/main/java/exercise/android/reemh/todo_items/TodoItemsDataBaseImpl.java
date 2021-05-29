@@ -68,6 +68,7 @@ public class TodoItemsDataBaseImpl implements TodoItemsDataBase, Serializable {
         newItem.setId(oldItem.getId());
         newItem.setStatus(oldItem.getStatus());
         newItem.setLastModifiedString(getModifiedTimeDifference(oldItem.getLastModified(),new Date()));
+        newItem.setLastModified(new Date());
         items.remove(oldItem);
         items.add(newItem);
 
@@ -77,6 +78,11 @@ public class TodoItemsDataBaseImpl implements TodoItemsDataBase, Serializable {
 
         toDoItemLiveDataMutable.setValue(new ArrayList<>(items));
 
+    }
+
+    public void setLastModified(int itemId){
+        TodoItem item=getById(itemId);
+        item.setLastModifiedString(getModifiedTimeDifference(item.getLastModified(),new Date()));
     }
 
     public TodoItem getById(int itemId) {

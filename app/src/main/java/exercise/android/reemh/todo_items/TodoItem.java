@@ -1,6 +1,7 @@
 package exercise.android.reemh.todo_items;
 
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -26,23 +27,37 @@ public class TodoItem implements Serializable {
         this.id = counter;
         createTime=new Date();
         lastModified=new Date();
-        lastModifiedString="";
+        lastModifiedString="0 minutes ago";
     }
 
-
+    public TodoItem(int id,String description,Status status,Date createTime,Date lastModified,String lastModifiedString) {
+        this.description = description;
+        this.status = status;
+        this.id = id;
+        this.createTime=createTime;
+        this.lastModified=lastModified;
+        this.lastModifiedString=lastModifiedString;
+        counter += 1;
+    }
     public TodoItem(String description) {
         this.description = description;
         this.status = Status.NOTDONE;
         this.id = counter;
         createTime=new Date();
         lastModified=new Date();
-        lastModifiedString="";
+        lastModifiedString="0 minutes ago";
 
         counter += 1;
     }
 //TODO!!!!!!!!!!!!!!!!!!!!!!!!
     public String itemToString() {
-        return String.valueOf(id) + "#" + description + "#" + String.valueOf(status)+"#"+createTime;
+        DateFormat dateFormat = new SimpleDateFormat("E, MMM dd yyyy HH:mm:ss");
+        String createTimeString=dateFormat.format(this.createTime);
+        String lastModifiedString=dateFormat.format(this.lastModified);
+
+
+        return String.valueOf(this.id) + "#" + this.description + "#" + String.valueOf(this.status)
+                +"#"+createTimeString+"#"+lastModifiedString+"#"+this.lastModifiedString;
     }
 
     public TodoItem stringToItem(String itemString) {
@@ -50,6 +65,7 @@ public class TodoItem implements Serializable {
             String[] split = itemString.split("#");
             int id = Integer.parseInt(split[0]);
             String des = split[1];
+
             Status status;
             switch (split[2]) {
                 case "NOTDONE":
@@ -62,13 +78,20 @@ public class TodoItem implements Serializable {
                     status = Status.INPROGRASS;
                     break;
             }
-            TodoItem newToSOItem = new TodoItem(des);
-            newToSOItem.setId(id);
-            newToSOItem.setStatus(status);
-            return newToSOItem;
+            SimpleDateFormat formatter5=new SimpleDateFormat("E, MMM dd yyyy HH:mm:ss");
+
+            Date cDate=formatter5.parse(split[3]);
+            Date lMDate=formatter5.parse(split[4]);
+            String stringLastModifiedDate=split[5];
+            return new TodoItem(id,des,status,cDate,lMDate,stringLastModifiedDate);
+
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
     }
 
     public void setLastModifiedString(String lastModifiedString) {
